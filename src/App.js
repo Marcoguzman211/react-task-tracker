@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Header from './components/Header'
 import Tasks from './components/Tasks'
+import AddTask from './components/AddTask'
 
 function App() {
   const [tasks, setTasks] = useState([
@@ -12,7 +13,7 @@ function App() {
     },
      {
         id: 2,
-        text: 'Rdv chez à l\'école',
+        text: 'Rdv à l\'école',
         day: 'Le 6 février à 17h30',
         reminder: true   
     },
@@ -23,10 +24,22 @@ function App() {
         reminder: false   
     }
 ])
+
+//Delete task 
+const deleteTask = (id) => {
+  setTasks(tasks.filter((task) => task.id !== id))
+}
+
+//Toggle reminder
+const toggleReminder = (id) => {
+  setTasks(tasks.map((task) => task.id === id ? { ...task, reminder: !task.reminder} : task))
+}
+
   return (
     <div className="container">
       <Header title='Hello'/>
-      <Tasks tasks={tasks} />
+      <AddTask />
+      {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}/> : 'No Tasks To Show'}
     </div>
   );
 }
